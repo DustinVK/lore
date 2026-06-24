@@ -21,22 +21,20 @@ this entry in a few sentences.
 
 ## Storage layout
 
-All entries live in a repo-relative `discussions/` directory:
+All entries live under a repo-relative `discussions/` directory:
 
 ```
 discussions/
 ├── INDEX.md                      # one line per entry; maintained by THIS skill
 ├── topics.md                     # controlled topic vocabulary (canonical tags)
-└── YYYY-MM-DD-short-slug.md       # one file per discussion
+├── QUESTIONS.md                  # open questions registry
+└── log/
+    └── YYYY-MM-DD-short-slug.md  # one file per discussion
 ```
 
-If `discussions/` does not exist yet, create it along with an empty `INDEX.md`
-and a starter `topics.md`. For the starter vocabulary, copy the contents of
-`topics.seed.md` (bundled alongside this skill) if it is present; otherwise
-generate a minimal two-section `topics.md` (an `## Areas` and a `## Topics`
-heading with a few placeholder tags). Then tell the user to replace the
-placeholder areas with their own product's feature slices. Never invent a second
-log location — if the user's repo already has `discussions/`, use it.
+If `discussions/` does not exist yet, create it along with `discussions/log/`,
+an empty `INDEX.md`, an empty QUESTIONS.md, and a starter `topics.md`. Never invent a second log
+location — if the user's repo already has `discussions/`, use it.
 
 ## Entry file format
 
@@ -81,6 +79,16 @@ long, compress harder; do not transcribe.
    Slack huddle) or pastes raw discussion. If they paste raw conversation,
    distill it yourself — extract decisions and rationale, drop the chatter.
 
+1b. **Decide: one entry or many?** Skim the source for distinct decision threads.
+    Split into one file per thread when two or more threads are *independently
+    queryable*: they have different areas, different stories, and outcomes that
+    could be reversed without affecting each other. Stay in one file when the
+    topics are causally linked — one decision constrained or led to another.
+    When splitting: process each thread through the full workflow (steps 2–9)
+    independently, and cross-link related entries by noting the companion slugs
+    in each entry's Open questions / follow-ups section (e.g. "See also: 2026-06-24-foo").
+    Report back how many files you created and why you split (or didn't).
+
 2. **Determine the date.** Default to today. Use an explicit date only if the
    user states when the discussion happened (e.g. "from yesterday's huddle").
 
@@ -121,10 +129,26 @@ long, compress harder; do not transcribe.
    `superseded_by:` this new slug. When unsure whether it's a reversal or just a
    related follow-up, do NOT auto-supersede — flag it to the user and ask.
 
-7. **Write the file** as `discussions/YYYY-MM-DD-short-slug.md`. Make the slug
-   short, lowercase, hyphenated, and recognizable (`oauth-token-refresh`, not
-   `discussion-about-the-auth-stuff`). If a file with that name exists, append a
-   short disambiguating suffix rather than overwriting.
+7. **Write the file** as `discussions/log/YYYY-MM-DD-short-slug.md`. Make the
+   slug short, lowercase, hyphenated, and recognizable (`oauth-token-refresh`,
+   not `discussion-about-the-auth-stuff`). If a file with that name exists,
+   append a short disambiguating suffix rather than overwriting.
+
+7b. **Register open questions.** For each item in the "Open questions / follow-ups"
+    section that is a genuine unresolved question (not "None"):
+    - Read `discussions/QUESTIONS.md` to find the highest existing Q-ID and
+      increment it. If QUESTIONS.md doesn't exist, create it with a `# Questions`
+      heading and start at Q-001.
+    - Prefix the item in the discussion entry with its ID: `- Q-001: How should we…`
+    - Append a new entry to QUESTIONS.md:
+      ```
+      ## Q-001 — <question text>
+      - **Status:** open
+      - **Areas:** [<same areas as this discussion>]
+      - **Asked:** YYYY-MM-DD | [<slug>](log/<slug>.md)
+      - **Resolution:** —
+      ```
+    Include the Q-IDs assigned in the report-back (step 9).
 
 8. **Update `INDEX.md`.** Append one line so the read skill can shortlist without
    opening files. Format:
@@ -142,7 +166,7 @@ long, compress harder; do not transcribe.
 **Example 1 — straightforward capture**
 Input: an AI summary of a huddle deciding to use Postgres row-level security for
 tenant isolation instead of separate schemas.
-Output: `discussions/2026-06-23-rls-tenant-isolation.md` with `areas: []`,
+Output: `discussions/log/2026-06-23-rls-tenant-isolation.md` with `areas: []`,
 `topics: [multi-tenancy, postgres, security]`, a Summary, a Decision (use RLS), a
 Why (operational simplicity, single migration path), and Alternatives
 (schema-per-tenant — rejected for migration overhead). One line appended to INDEX.
@@ -159,3 +183,14 @@ Input: a long thread weighing GraphQL caching options with no conclusion.
 Output: an entry whose Decisions section says "No decision — see Open questions",
 with the contenders captured under Open questions / follow-ups so the next
 discussion has the context.
+
+**Example 4 — long meandering discussion, two independent threads**
+Input: a 30-message thread that covers (a) switching the order PDF renderer and
+(b) a separate decision to add buyer price-suggestion to the cart. These share no
+causal link and would be searched independently.
+Output: two files — `discussions/log/2026-06-24-order-pdf-renderer.md`
+(areas: [order-process], topics: [pdf, rendering]) and
+`discussions/log/2026-06-24-buyer-price-suggestion.md`
+(areas: [cart, price-calculator], topics: [price-negotiation]). Each gets its own
+INDEX.md line. Report back: "Split into 2 entries — the PDF renderer decision and
+the cart price-suggestion decision are unrelated and would be retrieved separately."

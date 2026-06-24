@@ -21,13 +21,15 @@ assembled from nothing is worse than "I didn't find anything about that."
 
 ## Storage layout
 
-The log lives in a repo-relative `discussions/` directory:
+The log lives under a repo-relative `discussions/` directory:
 
 ```
 discussions/
 ├── INDEX.md                      # one line per entry — read this FIRST
 ├── topics.md                     # controlled topic vocabulary
-└── YYYY-MM-DD-short-slug.md       # one file per discussion
+├── QUESTIONS.md                  # open questions registry
+└── log/
+    └── YYYY-MM-DD-short-slug.md  # one file per discussion
 ```
 
 If `discussions/` or `INDEX.md` does not exist, tell the user the log is empty or
@@ -52,6 +54,7 @@ not set up yet — do not fabricate an answer.
      you suspect coverage, fall back to grepping the frontmatter across
      `discussions/*.md` (search `areas:`, `topics:`, `stories:`, and titles). The
      index is an optimization; the entry files are the source of truth.
+     Fall back to grepping `discussions/log/*.md` (not `discussions/*.md`).
 
 3. **Read the shortlisted entries** and pull the parts that answer the question —
    especially the Summary, Why, and Decisions sections.
@@ -64,7 +67,7 @@ not set up yet — do not fabricate an answer.
 5. **Synthesize a focused answer.** Lead with the direct answer to what they
    asked, then the rationale. Cite each entry you drew from by date + title (and
    filename), so the user can open the source:
-   > Per *RLS for tenant isolation* (2026-06-23, `discussions/2026-06-23-rls-tenant-isolation.md`): …
+   > Per *RLS for tenant isolation* (2026-06-23, `discussions/log/2026-06-23-rls-tenant-isolation.md`): …
    When two entries touch the same area, reconcile them in chronological order
    rather than presenting them as separate disconnected facts.
 
@@ -73,6 +76,18 @@ not set up yet — do not fabricate an answer.
    not-exact entries exist, offer them: "Nothing on X specifically, but there's a
    2026-05 discussion on the related Y — want that?" Never pad a thin result with
    plausible-sounding detail the entries don't contain.
+
+7. **Surface open questions.** After your answer, check `discussions/QUESTIONS.md`
+   for any questions whose areas overlap with the areas of the entries you surfaced.
+   If any are `Status: open`, append a brief section:
+   ```
+   ---
+   **Still open in this area:** Q-001 (asked 2026-06-23, international-shipping):
+   How should we handle tax for EU buyers?
+   ```
+   Only show open questions; skip resolved ones unless the user explicitly asks
+   (e.g. "what was Q-007?" or "show resolved questions too"). If no open questions
+   match, omit the section entirely — do not add noise.
 
 ## Answering style
 

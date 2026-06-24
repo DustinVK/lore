@@ -1,15 +1,22 @@
 # Discussion Log — a Claude Code plugin marketplace
 
 A self-hosted [Claude Code](https://code.claude.com) plugin marketplace that
-distributes **discussion-log**: two skills for capturing the useful residue
-of technical discussions and querying it later.
+distributes **discussion-log**: three skills for capturing the useful residue
+of technical discussions, querying it later, and closing out open questions.
 
-- **`discussion-log`** — distills a (raw or AI-generated) discussion summary into
-  one compact, tagged entry: *what was decided, why, and what was rejected* — not
-  a transcript.
+- **`discussion-log`** — distills a (raw or AI-generated) discussion summary
+  into one or more compact, tagged entries: *what was decided, why, and what
+  was rejected* — not a transcript. Long discussions that cover independent
+  topics are split into one file per independently-queryable thread. Genuine
+  unresolved questions are extracted into a `QUESTIONS.md` registry with
+  sequential IDs (Q-001, Q-002 …).
 - **`discussion-read`** — answers "why did we build it this way?" /
-  "what did we decide about X?" by searching the log, or tells you plainly when
-  there's nothing.
+  "what did we decide about X?" by searching the log, or tells you plainly
+  when there's nothing. After answering, it also surfaces any still-open
+  questions in the same area from `QUESTIONS.md`.
+- **`question-resolve`** — closes out an open question in `QUESTIONS.md`,
+  recording the answer, the rationale, and a link to the discussion that
+  settled it (or marking it standalone if there's no new log entry).
 
 Entries are tagged on two facets — **areas** (feature slices: `order-process`,
 `international-shipping`, `price-calculator`) and **topics** (cross-cutting
@@ -25,8 +32,8 @@ consuming project's repo, version-controlled and PR-reviewable next to the code.
 
 Restart Claude Code once after installing so the new skills are picked up. On
 first use in a project, `discussion-log` scaffolds a `discussions/` folder
-(`INDEX.md` + a starter `topics.md`) in that repo — the plugin ships the tooling,
-the log itself is per-project data.
+(`INDEX.md`, `QUESTIONS.ms` a starter `topics.md`, and a `log/` subdirectory) in that repo —
+the plugin ships the tooling, the log itself is per-project data.
 
 ### Usage
 
@@ -45,10 +52,24 @@ First-time setup in a project (optional but recommended):
 Both steps are optional — the log still works without them; the trigger just
 becomes manual and the vocabulary grows organically as you log.
 
-End of a huddle — paste the summary and say *"log this discussion"*. Later, ask
-*"why did we implement the price calculator the way we did?"* and `discussion-read`
-searches the log and summarizes the relevant entries (with dates and source
-files), or says it found nothing.
+End of a huddle — paste the summary and say *"log this discussion"*.
+`discussion-log` distills it, tags it, and writes one entry per independent
+decision thread under `discussions/log/`. If the discussion leaves genuine
+unresolved questions, they land in `discussions/QUESTIONS.md` with IDs like
+Q-001, Q-002 — prefixed in the entry so nothing gets lost.
+
+Later, ask *"why did we implement the price calculator the way we did?"* and
+`discussion-read` searches the log, summarizes the relevant entries (with dates
+and source files), and appends any still-open questions in the same area — so
+you know what's still unsettled without having to remember to check.
+
+When a question gets answered, say *"mark Q-007 resolved — we decided X because
+Y"* (or name the discussion entry if you just logged it). `question-resolve`
+updates `QUESTIONS.md` and annotates the source entry so the audit trail is
+complete.
+
+**Question lifecycle in one line:**
+`discussion-log` creates questions → `discussion-read` surfaces them → `question-resolve` closes them.
 
 ## Repo layout
 
@@ -68,11 +89,25 @@ discussion-log/
 │       │   └── seed-topics.md         # /seed-topics — bootstrap vocabulary from the codebase
 │       └── skills/
 │           ├── discussion-log/
-│           │   ├── SKILL.md
+│           │   ├── SKILL.md           # capture skill
 │           │   └── topics.seed.md     # starter vocabulary, copied on first run
-│           └── discussion-read/
-│               └── SKILL.md
+│           ├── discussion-read/
+│           │   └── SKILL.md           # query skill
+│           └── question-resolve/
+│               └── SKILL.md           # close out open questions
 └── README.md
+```
+
+Each consuming project's log lives in its own repo, not here:
+
+```
+<your-project>/
+└── discussions/
+    ├── INDEX.md          # one line per entry; maintained by discussion-log
+    ├── topics.md         # controlled tag vocabulary (areas + topics)
+    ├── QUESTIONS.md      # open/resolved question registry (created on first open question)
+    └── log/
+        └── YYYY-MM-DD-short-slug.md   # one file per discussion thread
 ```
 
 ## Publishing this yourself
@@ -90,4 +125,4 @@ Private repo? Auto-updates need a `GITHUB_TOKEN` / `GH_TOKEN` in the environment
 
 ## License
 
-MIT (placeholder — change to whatever you prefer, and update `plugin.json`).
+MIT.
