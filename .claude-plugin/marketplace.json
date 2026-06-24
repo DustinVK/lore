@@ -10,9 +10,9 @@
   },
   "plugins": [
     {
-      "name": "discussion-log",
-      "source": "./plugins/discussion-log",
-      "description": "Capture technical discussions into a searchable, repo-committed log and query the rationale later."
+      "name": "lore",
+      "source": "./plugins/lore",
+      "description": "Distill technical discussions into compact, tagged decision entries with a live registry of open questions, all version-controlled in your repo and queryable by Claude."
     }
   ]
 }

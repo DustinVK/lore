@@ -1,11 +1,11 @@
-# Discussion vocabulary (canonical tags)
+# Lore vocabulary (canonical tags)
 
-Starter vocabulary copied into a project's `discussions/topics.md` on first use.
+Starter vocabulary copied into a project's `lore/topics.md` on first use.
 Replace these placeholder areas with your own product's feature slices and prune
-the topics to what your team actually discusses. Keep both lists tidy — reuse
+the topics to what your team actually discusses. Keep both lists tidy. Reuse
 existing tags and only add a new one when nothing here covers it.
 
-## Areas — feature slices / product domains (WHAT)
+## Areas: feature slices / product domains (WHAT)
 
 Coarse, stable buckets aligned to your epics / bounded contexts. A sub-feature
 belongs to its parent area, not a new area.
@@ -16,7 +16,7 @@ belongs to its parent area, not a new area.
 - billing
 - accounts
 
-## Topics — cross-cutting technical concerns (HOW)
+## Topics: cross-cutting technical concerns (HOW)
 
 - auth            # authn/authz, OAuth, JWT, sessions
 - data-model
