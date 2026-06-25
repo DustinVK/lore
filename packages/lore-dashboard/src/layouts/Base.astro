@@ -35,24 +35,26 @@ const nav = [
 </head>
 <body>
   <header class="site-header">
-    <a href="/" class="wordmark">
-      <span class="prompt">&gt;</span>&nbsp;{siteTitle}<span class="cursor"></span>
-    </a>
-    <nav class="header-nav">
-      <ul class="nav-links">
-        {nav.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              class:list={{ 'nav-active': path === href || path.startsWith(href + '/') }}
-            >
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme"></button>
-    </nav>
+    <div class="header-inner">
+      <a href="/" class="wordmark">
+        <span class="prompt">&gt;</span>&nbsp;{siteTitle}<span class="cursor"></span>
+      </a>
+      <nav class="header-nav">
+        <ul class="nav-links">
+          {nav.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                class:list={{ 'nav-active': path === href || path.startsWith(href + '/') }}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <button id="theme-toggle" class="theme-toggle" aria-label="toggle theme"></button>
+      </nav>
+    </div>
   </header>
   <main class="container">
     <slot />
