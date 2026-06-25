@@ -38,7 +38,12 @@ const log = defineCollection({
 });
 
 const questions = defineCollection({
-  loader: glob({ pattern: '*.md', base: `${SRC}/questions` }),
+  loader: glob({
+    pattern: '*.md',
+    base: `${SRC}/questions`,
+    generateId: ({ entry, data }) =>
+      data.id ? String(data.id) : entry.replace(/\.md$/, ''),
+  }),
   schema: z.object({
     question: z.string(),
     status: z.enum(['open', 'resolved']).default('open'),
