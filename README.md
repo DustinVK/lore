@@ -1,9 +1,12 @@
 # lore -- a Claude Code plugin
 
-**Also in this repo:** [`packages/lore-dashboard/`](packages/lore-dashboard/) -- a build tool that renders your `lore/` directory as a static dashboard, deployable to Cloudflare Pages.
-
 Capture the why behind technical decisions into queryable lore that lives in your
 repo, where Claude can actually read it.
+
+A Claude Code plugin for teams who want a decision log or ADR practice, with Claude
+handling the capture, querying, and bookkeeping so it actually gets maintained.
+
+**Also in this repo:** [`packages/lore-dashboard/`](packages/lore-dashboard/) -- a build tool that renders your `lore/` directory as a static dashboard, deployable to Cloudflare Pages.
 
 Feed it a discussion (raw notes, a transcript, an AI-generated summary, a Slack
 thread) and it outputs compact entries capturing what was decided, why, and what

@@ -12,7 +12,7 @@
     {
       "name": "lore",
       "source": "./plugins/lore",
-      "description": "Distill technical discussions into compact, tagged decision entries with a live registry of open questions, all version-controlled in your repo and queryable by Claude."
+      "description": "Distill technical discussions into compact, tagged decision entries with a live registry of open questions, all version-controlled in your repo and queryable by Claude. Reversed decisions are superseded and point to their replacement, so the log stays trustworthy instead of going stale."
     }
   ]
 }

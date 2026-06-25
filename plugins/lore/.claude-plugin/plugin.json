@@ -7,5 +7,5 @@
   },
   "homepage": "https://dustinvk.com/projects/lore/",
   "license": "MIT",
-  "keywords": ["decision-log", "adr", "documentation", "knowledge-base"]
+  "keywords": ["claude-code", "claude-code-plugin", "claude", "decision-log", "adr", "architecture-decision-records", "knowledge-management", "documentation", "agent-skills"]
 }

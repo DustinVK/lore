@@ -1,21 +1,23 @@
-# Discussion vocabulary (canonical tags)
+# Topics
 
-Replace placeholder areas with your own product's feature slices. Keep both lists
-tidy — reuse existing tags and only add a new one when nothing here covers it.
+Controlled tag vocabulary for this project's lore. Two facets: Areas (what part
+of the product) and Topics (cross-cutting concerns). Keep these coarse and stable.
 
-## Areas — feature slices / product domains (WHAT)
+## Areas
+- plugin — the Claude Code plugin: skills and commands
+- dashboard — the lore-dashboard build tool that renders lore/ as a static site
+- branding — product naming and how it is positioned
+- repo-structure — repository layout, packaging, and CI
 
-- dashboard         # the Astro static dashboard (dashboard/)
-- skill-capture     # discussion-log capture skill
-- skill-read        # discussion-read query skill
-- skill-resolve     # question-resolve skill
-- seed-topics       # seed-topics command
-
-## Topics — cross-cutting technical concerns (HOW)
-
-- data-model        # schema and file format decisions
-- astro             # Astro framework specifics
-- frontend          # UI/UX and styling decisions
-- cloudflare-pages  # CF Pages deployment
-- architecture      # structural and design decisions
-- skill-authoring   # how skills and commands are written
+## Topics
+- supersession — the decision lifecycle: retiring or replacing past decisions
+- data-model — frontmatter shape, status fields, schema
+- positioning — how the product is framed against alternatives
+- naming — names of the product, skills, directories
+- distribution — how the dashboard reaches consuming projects
+- publishing — npm packaging and release mechanics
+- ci — continuous integration and workflows
+- ui — dashboard rendering and pages
+- docs — documentation decisions
+- skill-structure — how skills are split and organized
+- build — build pipeline and Astro integration

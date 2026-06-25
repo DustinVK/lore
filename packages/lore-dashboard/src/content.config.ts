@@ -1,24 +1,40 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-// Full schema (status enum, hyphenated superseded-by/-date keys, null handling,
-// transforms) comes from the build-tool plan in a later pass.
-
 const SRC = process.env.LORE_SRC;
 if (!SRC) throw new Error('LORE_SRC environment variable is required');
 
-// YAML parses unquoted YYYY-MM-DD as a Date object; coerce back to ISO string.
 const yamlDate = z.union([z.string(), z.date()]).transform(d =>
   d instanceof Date ? d.toISOString().slice(0, 10) : d
 );
+
+const yamlDateNullable = z.union([z.string(), z.date(), z.null()]).transform(d =>
+  d instanceof Date ? d.toISOString().slice(0, 10) : (d ?? null)
+).default(null);
 
 const log = defineCollection({
   loader: glob({ pattern: '*.md', base: `${SRC}/log` }),
   schema: z.object({
     date: yamlDate,
     title: z.string(),
-    status: z.string().default('active'),
-  }),
+    areas: z.array(z.string()).default([]),
+    topics: z.array(z.string()).default([]),
+    stories: z.array(z.string()).default([]),
+    status: z.enum(['active', 'current', 'superseded', 'obsolete']).default('active'),
+    supersedes: z.string().nullable().default(null),
+    'superseded-by': z.string().nullable().default(null),
+    'superseded-date': yamlDateNullable,
+  }).transform(d => ({
+    date: d.date,
+    title: d.title,
+    areas: d.areas,
+    topics: d.topics,
+    stories: d.stories,
+    status: (d.status === 'current' ? 'active' : d.status) as 'active' | 'superseded' | 'obsolete',
+    supersedes: d.supersedes || null,
+    supersededBy: d['superseded-by'] || null,
+    supersededDate: d['superseded-date'] || null,
+  })),
 });
 
 const questions = defineCollection({
@@ -26,10 +42,12 @@ const questions = defineCollection({
   schema: z.object({
     id: z.string(),
     question: z.string(),
-    status: z.string().default('open'),
+    status: z.enum(['open', 'resolved']).default('open'),
     areas: z.array(z.string()).default([]),
     asked_date: yamlDate,
     asked_slug: z.string(),
+    resolution: z.string().nullable().default(null),
+    resolution_slug: z.string().nullable().default(null),
   }),
 });
 

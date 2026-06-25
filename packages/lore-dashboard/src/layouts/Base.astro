@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  pageTitle?: string;
+}
+
+const siteTitle = process.env.LORE_TITLE ?? 'Lore Dashboard';
+const { pageTitle } = Astro.props;
+const docTitle = pageTitle ? `${pageTitle} — ${siteTitle}` : siteTitle;
+const path = Astro.url.pathname;
+
+const nav = [
+  { href: '/log', label: 'Log' },
+  { href: '/questions', label: 'Questions' },
+  { href: '/tags', label: 'Tags' },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{docTitle}</title>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="site-title">{siteTitle}</a>
+    <nav>
+      <ul class="nav-links">
+        {nav.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class:list={{ 'nav-active': path === href || path.startsWith(href + '/') }}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </header>
+  <main class="container">
+    <slot />
+  </main>
+</body>
+</html>

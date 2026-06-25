@@ -1,21 +1,83 @@
 ---
 import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
 
-const entries = await getCollection('log');
-const questions = await getCollection('questions');
-const openCount = questions.filter(q => q.data.status === 'open').length;
-const title = process.env.LORE_TITLE ?? 'Lore Dashboard';
+const allEntries = await getCollection('log');
+const allQuestions = await getCollection('questions');
+
+const recentEntries = allEntries
+  .filter(e => e.data.status === 'active')
+  .sort((a, b) => b.data.date.localeCompare(a.data.date))
+  .slice(0, 5);
+
+const openQuestions = allQuestions
+  .filter(q => q.data.status === 'open')
+  .sort((a, b) => {
+    const numA = parseInt(a.data.id.replace(/\D/g, ''), 10) || 0;
+    const numB = parseInt(b.data.id.replace(/\D/g, ''), 10) || 0;
+    return numB - numA;
+  });
+
+const activeCount = allEntries.filter(e => e.data.status === 'active').length;
+const openCount = openQuestions.length;
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title}</title>
-</head>
-<body>
-  <h1>{title}</h1>
-  <p>Placeholder. Full dashboard coming in a later pass.</p>
-  <p data-testid="counts">{entries.length} log entries &mdash; {openCount} open questions.</p>
-</body>
-</html>
+<Base>
+  <div class="home-stats">
+    <span>{activeCount} active {activeCount === 1 ? 'entry' : 'entries'}</span>
+    <span class="stat-sep">·</span>
+    <span>{openCount} open {openCount === 1 ? 'question' : 'questions'}</span>
+  </div>
+
+  <div class="section-head">
+    Recent entries
+    <a href="/log">All entries &rarr;</a>
+  </div>
+
+  {recentEntries.length === 0 ? (
+    <p class="empty">No entries yet.</p>
+  ) : (
+    <ul class="entry-list">
+      {recentEntries.map(e => (
+        <li class="entry-card">
+          <a class="entry-title" href={`/log/${e.id}`}>{e.data.title}</a>
+          <div class="entry-meta">
+            <span class="entry-date">{e.data.date}</span>
+            {e.data.areas.map(a => <span class="chip chip--area">{a}</span>)}
+            {e.data.topics.map(t => <span class="chip">{t}</span>)}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <div class="section-head" style="margin-top: 2.5rem;">
+    Open questions
+    <a href="/questions">All questions &rarr;</a>
+  </div>
+
+  {openQuestions.length === 0 ? (
+    <p class="empty">No open questions.</p>
+  ) : (
+    <ul class="question-list">
+      {openQuestions.map(q => (
+        <li class="question-card">
+          <div class="question-id">{q.data.id}</div>
+          <div class="question-text">{q.data.question}</div>
+          <div class="question-meta">
+            <span class="entry-date">{q.data.asked_date}</span>
+            {q.data.areas.map(a => <span class="chip chip--area">{a}</span>)}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</Base>
+
+<style>
+  .home-stats {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  .stat-sep { margin: 0 0.25rem; }
+</style>
