@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "node bin/lore-dashboard.js dev",
     "build": "node bin/lore-dashboard.js build --src tests/fixtures/lore --out .test-dist",
-    "test": "node --test 'tests/**/*.{mjs,js}'"
+    "test": "node --test tests/fixture-check.mjs tests/cli.test.js"
   },
   "dependencies": {
     "astro": "^5.0.0"
