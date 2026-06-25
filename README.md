@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/lockup-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset=".github/assets/lockup-light.svg">
+  <img alt="wherefore" src=".github/assets/lockup-light.svg" width="280">
+</picture>
+
 # wherefore -- a Claude Code plugin
 
 Capture the why behind technical decisions into a queryable log that lives in your
