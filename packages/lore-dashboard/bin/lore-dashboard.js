@@ -1,13 +1,38 @@
 #!/usr/bin/env node
 import { build, dev } from 'astro';
 import { cp, rm } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(__dirname, '..');
+
+const USAGE = `lore-dashboard -- build or preview a static dashboard from a lore/ directory
+
+Usage:
+  lore-dashboard build [--src <path>] [--out <path>] [--title <string>]
+  lore-dashboard dev   [--src <path>] [--title <string>]
+  lore-dashboard init
+
+Options:
+  --src <path>     Path to the lore/ directory to render. Default: ./lore
+  --out <path>     Output directory for the built site. Default: ./dist
+  --title <string> Override the dashboard title.
+  -h, --help       Show this help.`;
+
+function checkSrc(src) {
+  const logDir = resolve(src, 'log');
+  let ok = false;
+  try { ok = statSync(logDir).isDirectory(); } catch (_) {}
+  if (!ok) {
+    console.error(`Error: no lore found at ${src}`);
+    console.error(`  Expected a lore directory containing a log/ subfolder.`);
+    console.error(`  Pass --src pointing at your project's lore/ directory.`);
+    process.exit(1);
+  }
+}
 
 function parseArgs(argv) {
   const args = argv.slice(2);
@@ -24,9 +49,19 @@ function parseArgs(argv) {
 
 const { command, flags } = parseArgs(process.argv);
 
+const rawArgs = process.argv.slice(2);
+const wantsHelp = rawArgs.includes('--help') || rawArgs.includes('-h');
+
+if (!command || command === 'help' || command === '--help' || command === '-h' || wantsHelp) {
+  console.log(USAGE);
+  process.exit(0);
+}
+
 if (command === 'build') {
   const src = resolve(flags.src ?? './lore');
   const out = resolve(flags.out ?? './dist');
+
+  checkSrc(src);
 
   process.env.LORE_SRC = src;
   if (flags.title) process.env.LORE_TITLE = flags.title;
@@ -46,6 +81,8 @@ if (command === 'build') {
 
 } else if (command === 'dev') {
   const src = resolve(flags.src ?? './lore');
+
+  checkSrc(src);
 
   process.env.LORE_SRC = src;
   if (flags.title) process.env.LORE_TITLE = flags.title;
