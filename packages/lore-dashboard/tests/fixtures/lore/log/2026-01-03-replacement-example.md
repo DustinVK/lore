@@ -1,11 +1,11 @@
 ---
-date: 2026-07-01
+date: 2026-01-03
 title: Replacement example decision
 areas: [checkout]
 topics: [api-design]
 stories: [PROJ-102]
 status: active
-supersedes: 2026-06-20-superseded-example
+supersedes: 2026-01-02-superseded-example
 superseded-by:
 superseded-date:
 ---
@@ -24,7 +24,7 @@ Performance data from load testing showed the old approach would not scale.
 
 ## Alternatives considered
 
-- The old approach, now in 2026-06-20-superseded-example.
+- The old approach, now in 2026-01-02-superseded-example.
 
 ## Open questions / follow-ups
 

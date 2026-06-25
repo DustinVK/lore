@@ -1,5 +1,5 @@
 ---
-date: 2026-06-18
+date: 2026-01-04
 title: Obsolete example decision
 areas: [billing]
 topics: [auth]
@@ -7,9 +7,9 @@ stories: []
 status: obsolete
 supersedes:
 superseded-by:
-superseded-date: 2026-06-30
+superseded-date: 2026-01-15
 ---
-OBSOLETE 2026-06-30. Kept for history, not current.
+OBSOLETE 2026-01-15. Kept for history, not current.
 
 ## Summary
 

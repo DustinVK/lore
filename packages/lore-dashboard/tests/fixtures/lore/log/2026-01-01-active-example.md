@@ -1,5 +1,5 @@
 ---
-date: 2026-06-23
+date: 2026-01-01
 title: Active example decision
 areas: [checkout]
 topics: [api-design]
@@ -28,4 +28,4 @@ Option A was simpler and had no known downsides at the time.
 
 ## Open questions / follow-ups
 
-None.
+- Q-001: Should we rate-limit per user or per IP?

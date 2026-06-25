@@ -46,7 +46,7 @@ test('log fixtures -- status values are valid', () => {
 });
 
 test('log fixtures -- superseded entry has superseded-by and superseded-date', () => {
-  const file = '2026-06-20-superseded-example.md';
+  const file = '2026-01-02-superseded-example.md';
   const content = readFileSync(resolve(FIXTURE, 'log', file), 'utf-8');
   assert.match(content, /superseded-by:\s*\S+/, `${file}: superseded-by must be non-blank`);
   assert.match(content, /superseded-date:\s*\d{4}-\d{2}-\d{2}/, `${file}: superseded-date must be a date`);
