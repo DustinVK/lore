@@ -21,11 +21,14 @@
   --red-tint: rgba(229,72,77,.10);
   --red-bd:   rgba(229,72,77,.28);
 
+  --surface-faint: rgba(255,255,255,.05);
+
   --radius:    8px;
   --radius-lg: 14px;
   --ui:   'Inter', Helvetica, Arial, sans-serif;
   --mono: 'JetBrains Mono', 'Courier New', monospace;
   --max-width: 860px;
+  color-scheme: dark light;
 }
 
 /* ── Reset ───────────────────────────────────────────────────── */
@@ -93,6 +96,21 @@ a { color: inherit; text-decoration: none; }
 .nav-links a { color: var(--faint); }
 .nav-links a:hover { color: var(--text); }
 .nav-links a.nav-active { color: var(--text); font-weight: 500; }
+
+.header-nav { display: flex; align-items: center; gap: 14px; }
+
+.theme-toggle {
+  font-family: var(--mono);
+  color: var(--faint);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px 8px;
+  cursor: pointer;
+  line-height: 1;
+}
+.theme-toggle::before { font-size: 14px; content: '○'; }
+.theme-toggle:hover { color: var(--text); border-color: var(--muted); }
 
 /* ── Container ───────────────────────────────────────────────── */
 .container {
@@ -202,7 +220,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .tag-area  { color: var(--teal-tag); background: var(--teal-tint); }
-.tag-topic { color: var(--muted);    background: rgba(255,255,255,.05); }
+.tag-topic { color: var(--muted);    background: var(--surface-faint); }
 
 /* ── Status badges (on rows) ─────────────────────────────────── */
 .badge-sup {
@@ -222,7 +240,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);
-  background: rgba(255,255,255,.05);
+  background: var(--surface-faint);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 2px 8px;
@@ -242,7 +260,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   color: var(--soft);
   background: transparent;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid var(--border);
   border-radius: 7px;
   padding: 8px 12px;
   cursor: pointer;
@@ -260,7 +278,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   color: var(--soft);
   background: transparent;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid var(--border);
   border-radius: 7px;
   padding: 8px 12px;
 }
@@ -298,7 +316,7 @@ a { color: inherit; text-decoration: none; }
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #5a5a62;
+  background: var(--faint2);
   transition: left .12s, background .12s;
 }
 
@@ -342,7 +360,7 @@ a { color: inherit; text-decoration: none; }
 
 .callout-obs {
   border-color: var(--border);
-  background: rgba(255,255,255,.04);
+  background: var(--surface-faint);
   color: var(--muted);
 }
 
@@ -402,7 +420,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono);
   font-size: 13px;
   color: var(--teal-tag);
-  background: rgba(255,255,255,.05);
+  background: var(--surface-faint);
   padding: 1px 5px;
   border-radius: 4px;
 }
@@ -421,7 +439,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 13px;
   color: var(--faint);
   background: transparent;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid var(--border);
   border-radius: 7px;
   padding: 7px 14px;
   cursor: pointer;
@@ -548,3 +566,74 @@ details.q-expand > summary::-webkit-details-marker { display: none; }
   .q-filter-row { gap: 7px; }
   .filter-search { min-width: 100px; }
 }
+
+/* ── Light theme ─────────────────────────────────────────────── */
+
+/* Shared light-token values, defined once as a SCSS-style block via :is() */
+@media (prefers-color-scheme: light) {
+  /* no-JS fallback: OS says light and user has not explicitly overridden to dark */
+  html:not([data-theme="dark"]) {
+    --bg-page:    #eceef0;
+    --bg:         #ffffff;
+    --chrome:     #f3f4f6;
+    --border:     rgba(0,0,0,.10);
+    --border-soft:rgba(0,0,0,.07);
+
+    --text:   #181a1f;
+    --soft:   #3f434b;
+    --muted:  #5a5e66;
+    --faint:  #8a8e97;
+    --faint2: #a2a6ad;
+
+    --teal:      #258a84;
+    --teal-tag:  #1d736e;
+    --teal-tint: rgba(45,150,143,.12);
+
+    --red:      #d23f3e;
+    --red-text: #bb302e;
+    --red-tint: rgba(210,63,62,.09);
+    --red-bd:   rgba(210,63,62,.30);
+
+    --surface-faint: rgba(0,0,0,.04);
+  }
+
+  html:not([data-theme="dark"]) .row-sup { opacity: .62; }
+  html:not([data-theme="dark"]) .row-sup .entry-title { text-decoration-color: rgba(210,63,62,.55); }
+  html:not([data-theme="dark"]) .row-obs .entry-title { text-decoration-color: rgba(0,0,0,.25); }
+  html:not([data-theme="dark"]) .toggle-track { background: #e5e7ea; }
+  html:not([data-theme="dark"]) .toggle-cb:checked ~ .filter-toggle .toggle-track { border-color: rgba(37,138,132,.3); }
+  html:not([data-theme="dark"]) .theme-toggle::before { content: '●'; }
+}
+
+/* JS-driven explicit override — applies regardless of OS preference */
+html[data-theme="light"] {
+  --bg-page:    #eceef0;
+  --bg:         #ffffff;
+  --chrome:     #f3f4f6;
+  --border:     rgba(0,0,0,.10);
+  --border-soft:rgba(0,0,0,.07);
+
+  --text:   #181a1f;
+  --soft:   #3f434b;
+  --muted:  #5a5e66;
+  --faint:  #8a8e97;
+  --faint2: #a2a6ad;
+
+  --teal:      #258a84;
+  --teal-tag:  #1d736e;
+  --teal-tint: rgba(45,150,143,.12);
+
+  --red:      #d23f3e;
+  --red-text: #bb302e;
+  --red-tint: rgba(210,63,62,.09);
+  --red-bd:   rgba(210,63,62,.30);
+
+  --surface-faint: rgba(0,0,0,.04);
+}
+
+html[data-theme="light"] .row-sup { opacity: .62; }
+html[data-theme="light"] .row-sup .entry-title { text-decoration-color: rgba(210,63,62,.55); }
+html[data-theme="light"] .row-obs .entry-title { text-decoration-color: rgba(0,0,0,.25); }
+html[data-theme="light"] .toggle-track { background: #e5e7ea; }
+html[data-theme="light"] .toggle-cb:checked ~ .filter-toggle .toggle-track { border-color: rgba(37,138,132,.3); }
+html[data-theme="light"] .theme-toggle::before { content: '●'; }

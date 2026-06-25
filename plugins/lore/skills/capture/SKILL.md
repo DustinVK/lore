@@ -49,7 +49,7 @@ ALWAYS write each entry with this exact structure:
 ```markdown
 ---
 date: YYYY-MM-DD
-title: Short human-readable title (<= 8 words)
+title: "Short human-readable title (<= 8 words)"  # ALWAYS quote titles
 areas: [order-process]            # feature slices (WHAT part of the product; from topics.md)
 topics: [price-calculation, tax]  # cross-cutting concerns (HOW; from topics.md)
 stories: [PROJ-1234]              # related tickets / user stories, or []

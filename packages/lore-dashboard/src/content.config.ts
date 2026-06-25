@@ -40,7 +40,6 @@ const log = defineCollection({
 const questions = defineCollection({
   loader: glob({ pattern: '*.md', base: `${SRC}/questions` }),
   schema: z.object({
-    id: z.string(),
     question: z.string(),
     status: z.enum(['open', 'resolved']).default('open'),
     areas: z.array(z.string()).default([]),

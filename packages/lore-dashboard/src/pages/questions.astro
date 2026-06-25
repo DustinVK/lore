@@ -41,7 +41,7 @@ const resolvedCount = allQ.filter(q => q.data.status === 'resolved').length;
           data-areas={q.data.areas.join(',')}
           data-question={q.data.question.toLowerCase()}
         >
-          <div class="q-id-date">{q.data.id} · {q.data.asked_date}</div>
+          <div class="q-id-date">{q.id.toUpperCase()} · {q.data.asked_date}</div>
           <span class="q-text">{q.data.question}</span>
           <div class="entry-meta">
             {q.data.areas.map(a => <span class="tag tag-area">{a}</span>)}
