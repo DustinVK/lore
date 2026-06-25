@@ -7,3 +7,9 @@ Thumbs.db
 
 # Node (only if you add tooling later)
 node_modules/
+
+# lore-dashboard package build artifacts
+packages/lore-dashboard/node_modules/
+packages/lore-dashboard/dist/
+packages/lore-dashboard/.astro/
+packages/lore-dashboard/.test-dist/

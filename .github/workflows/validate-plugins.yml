@@ -3,7 +3,13 @@ name: Validate plugin marketplace
 on:
   push:
     branches: [main]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
   pull_request:
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
   workflow_dispatch:
 
 jobs:

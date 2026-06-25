@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('log');
+const questions = await getCollection('questions');
+const openCount = questions.filter(q => q.data.status === 'open').length;
+const title = process.env.LORE_TITLE ?? 'Lore Dashboard';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+</head>
+<body>
+  <h1>{title}</h1>
+  <p>Placeholder. Full dashboard coming in a later pass.</p>
+  <p data-testid="counts">{entries.length} log entries &mdash; {openCount} open questions.</p>
+</body>
+</html>
