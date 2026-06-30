@@ -6,9 +6,9 @@
 
 # wherefore
 
-The why behind your code. Capture the reasoning behind your technical decisions,
-what you chose, why, and what you ruled out, as plain markdown that lives in your
-repo.
+A Claude Code skill that generates a decision log as plain markdown files in your
+repo. Paste in a discussion and it writes what was decided, why, and what was ruled
+out. No cloud, no database, just files committed next to your code.  
 
 ## Quick start
 
@@ -117,6 +117,38 @@ npx @dustinvk/wherefore-dashboard dev
 from any directory containing a `wherefore/` folder. See the
 [package README](packages/wherefore-dashboard/README.md) for build options, local
 preview, and deploying to Cloudflare Pages.
+
+## Running the dashboard from source
+
+If you have this repo cloned and want to run the dashboard from the local source
+rather than the published npm package:
+
+```bash
+cd packages/wherefore-dashboard
+npm install
+node bin/wherefore-dashboard.js dev --src /path/to/your/project/wherefore
+```
+
+To build a static site instead:
+
+```bash
+node bin/wherefore-dashboard.js build \
+  --src /path/to/your/project/wherefore \
+  --out ./dist
+```
+
+If you want to point it at this repo's own `wherefore/` directory, a relative path
+from inside the package works:
+
+```bash
+node bin/wherefore-dashboard.js dev --src ../../wherefore
+```
+
+Or equivalently from the repo root:
+
+```bash
+node packages/wherefore-dashboard/bin/wherefore-dashboard.js dev --src ./wherefore
+```
 
 ## Setup tips
 
