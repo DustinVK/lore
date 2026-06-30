@@ -4,7 +4,7 @@
   <img alt="wherefore" src=".github/assets/lockup-light.svg" width="280">
 </picture>
 
-# wherefore
+# wherefore: the why behind your code
 
 A Claude Code skill that generates a decision log as plain markdown files in your
 repo. Paste in a discussion and it writes what was decided, why, and what was ruled
